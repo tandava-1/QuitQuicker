@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clear Air</title>
+<meta name="description" content="A calm companion for quitting smoking.">
+<meta name="theme-color" content="#F7F9F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1714" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Clear Air">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="preload" href="./fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Fraunces";src:url("./fonts/fraunces.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/inter-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/inter-500.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/inter-600.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/inter-700.woff2") format("woff2");font-weight:700;font-display:swap}
+:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+body{margin:0;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+img{max-width:100%}[hidden]{display:none!important}
+html{overscroll-behavior-y:none}
+</style>
+<style>
+/* Clear Air design system (Style Tile v0.1, Direction A). Layout: phone column, three-item bottom nav (Home · Milestones · You) with a floating SOS button on every screen; SOS and logging open as spring sheets. */
+:root{
+  --bg:#F7F9F6; --surface:#FFFFFF; --surface-muted:#EEF4F0; --ink:#1C2B24; --ink-muted:#5B6B64; --line:#D7E2DC;
+  --brand:#1DBA8A; --brand-deep:#0E7A5C; --brand-soft:#D8F5EA; --on-brand:#0F1714;
+  --sky:#7EC8C3; --sky-soft:#E1F2F0; --sky-deep:#2E6E6A;
+  --gold:#E8B84A; --gold-soft:#FBF3DC; --gold-deep:#86621A;
+  --lilac:#B8A6E8; --lilac-soft:#EFEAFB; --lilac-deep:#5A4A98;
+  --sos:#E25B4A; --warn:#E9A23B;
+  --hero:#0F1714; --hero-ink:#F2F6F3; --hero-muted:#9AABA3;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --ui:"Inter", "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r-card:16px; --r-sheet:24px; --r-hero:20px; --pill:999px; --u:4px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1714; --surface:#18211D; --surface-muted:#1F2A25; --ink:#E6EFEA; --ink-muted:#95A69E; --line:#2A3832;
+  --brand:#3ED9A5; --brand-deep:#8BEACB; --brand-soft:#16372C; --on-brand:#0F1714;
+  --sky-soft:#173134; --sky-deep:#A6DDD9; --gold-soft:#342B16; --gold-deep:#F0CD7C; --lilac-soft:#2A2440; --lilac-deep:#CFC2F2;
+  --hero:#18211D; --hero-ink:#F2F6F3; --hero-muted:#9AABA3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1714; --surface:#18211D; --surface-muted:#1F2A25; --ink:#E6EFEA; --ink-muted:#95A69E; --line:#2A3832;
+  --brand:#3ED9A5; --brand-deep:#8BEACB; --brand-soft:#16372C; --on-brand:#0F1714;
+  --sky-soft:#173134; --sky-deep:#A6DDD9; --gold-soft:#342B16; --gold-deep:#F0CD7C; --lilac-soft:#2A2440; --lilac-deep:#CFC2F2;
+  --hero:#18211D; --hero-ink:#F2F6F3; --hero-muted:#9AABA3; color-scheme:dark}
+html,body{height:100%}
+body{--knock:var(--surface);background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:24px}
+*{box-sizing:border-box}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.45}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.app{max-width:440px;margin:0 auto;padding-inline:16px;padding-block:12px 176px;display:flex;flex-direction:column;gap:calc(var(--u)*3)}
+h1,h2,h3{margin:0;text-wrap:balance}
+.fr{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:800;letter-spacing:-.01em}
+.screen-title{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:800;font-size:28px;line-height:34px}
+.kicker{font-size:13px;line-height:18px;font-weight:500;color:var(--ink-muted)}
+.label{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+.meta{font-size:13px;line-height:18px;font-weight:500;color:var(--ink-muted)}
+.title{font-size:16px;line-height:22px;font-weight:600}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.appbar{display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600;font-size:15px;padding-block:4px}
+.appbar .ic{color:var(--brand)}
+.ic{width:24px;height:24px;flex:none;display:block}
+.ic.s20{width:20px;height:20px}
+.ic.flip{transform:scaleX(-1)}
+.head{display:flex;flex-direction:column;gap:2px;padding-top:8px}
+.notice{background:var(--surface-muted);border-radius:12px;padding:10px 12px;font-size:13px;line-height:18px;color:var(--ink-muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:16px;display:flex;flex-direction:column;gap:12px}
+.well{border-radius:var(--r-card);padding:14px 12px;display:grid;grid-template-columns:24px 1fr;column-gap:10px;align-items:center;min-width:0}
+.well>div{display:flex;flex-direction:column;min-width:0}
+.well b{font-size:20px;line-height:26px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.well span{font-size:13px;line-height:18px;font-weight:500}
+.t-brand{background:var(--brand-soft);color:var(--brand-deep)}
+.t-gold{background:var(--gold-soft);color:var(--gold-deep)}
+.t-sky{background:var(--sky-soft);color:var(--sky-deep)}
+.t-lilac{background:var(--lilac-soft);color:var(--lilac-deep)}
+.t-muted{background:var(--surface-muted);color:var(--ink)}
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* hero */
+.hero{background:var(--hero);color:var(--hero-ink);border-radius:var(--r-hero);padding:18px 18px 20px;display:flex;flex-direction:column;gap:18px;border:1px solid var(--line)}
+.hero .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hero .label{color:var(--hero-muted)}
+.pill{border-radius:var(--pill);padding:3px 12px;font-size:13px;line-height:18px;font-weight:600;background:var(--brand);color:var(--on-brand)}
+.bigrow{display:flex;align-items:baseline;gap:10px}
+.big{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:900;font-size:56px;line-height:52px;font-variant-numeric:tabular-nums lining-nums}
+.bigunit{font-size:16px;color:var(--hero-muted);font-weight:500}
+.clock{display:flex;gap:22px;align-items:baseline}
+.clock b{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:900;font-size:26px;line-height:28px;font-variant-numeric:tabular-nums lining-nums}
+.clock span{font-size:11px;color:var(--hero-muted);margin-left:3px;font-weight:500}
+.hero .foot{font-size:13px;line-height:18px;color:var(--hero-muted)}
+/* rows & buttons */
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:var(--pill);padding:12px 18px;font-size:15px;line-height:20px;font-weight:500;background:var(--surface-muted);color:var(--ink)}
+.btn.primary{background:var(--brand);color:var(--on-brand);font-weight:600}
+.btn.dark{background:var(--ink);color:var(--bg);font-weight:600}
+.btn.ghost{background:transparent;border:1px solid var(--line)}
+.btn.grow{flex:1}
+.btn.block{width:100%;padding-block:15px}
+.link{background:none;border:0;padding:0;color:var(--ink-muted);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.peek{display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:14px 16px;width:100%}
+.tick{color:var(--ink-muted)}
+.tick.on{color:var(--brand-deep)}
+.status{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--brand)}
+.dot.m{background:var(--ink-muted)}
+/* mission */
+.mission{border-radius:var(--r-card);border:1px solid var(--line);background:var(--surface);overflow:hidden}
+.mission .band{background:var(--brand);color:var(--on-brand);padding:14px 18px 22px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:0 0 var(--r-card) var(--r-card)}
+.mission .body{padding:18px;display:flex;flex-direction:column;gap:14px}
+.mission h3{font-size:20px;line-height:26px;font-weight:600}
+.bul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:18px;color:var(--ink-muted)}
+.bul li{display:flex;gap:10px;align-items:baseline}
+.bul li:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand);flex:none;transform:translateY(-1px)}
+.banner{border-radius:var(--r-card);padding:14px 16px;font-size:13px;line-height:18px;font-weight:500}
+.banner .title{font-size:15px}
+textarea,input[type=number],input[type=date],input[type=text],input[type=tel]{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:16px}
+textarea{min-height:88px;resize:vertical}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-muted)}
+/* timeline */
+.tl{display:flex;flex-direction:column}
+.node{display:grid;grid-template-columns:28px 1fr;gap:14px;position:relative;padding-bottom:10px}
+.node:before{content:"";position:absolute;left:13px;top:30px;bottom:-2px;width:2px;background:var(--line)}
+.node.done:before{background:var(--brand)}
+.node:last-child:before{display:none}
+.ring{width:28px;height:28px;display:grid;place-items:center;margin-top:12px;color:var(--ink-muted);background:var(--bg);--knock:var(--bg)}
+.node.done .ring{color:var(--brand-deep)}
+.node.next .ring{color:var(--gold)}
+.ncard{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-card);padding:12px 14px}
+.node.latest .ncard{background:var(--brand-soft);border-color:transparent}
+.node.next .ncard{border-color:var(--gold)}
+.ncard summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.ncard summary::-webkit-details-marker{display:none}
+.ncard .when{font-size:15px;font-weight:600}
+.ncard .what{font-size:13px;line-height:18px;color:var(--ink-muted)}
+.node.latest .ncard .what{color:var(--brand-deep)}
+.ncard .why{font-size:13px;line-height:19px;color:var(--ink-muted);margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line)}
+/* calendar */
+.calhead{display:flex;align-items:center;justify-content:space-between}
+.iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:var(--pill);width:36px;height:36px;display:grid;place-items:center;font-size:18px}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{font-size:11px;text-align:center;color:var(--ink-muted);font-weight:600}
+.cell{aspect-ratio:1;max-width:100%;border-radius:10px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;font-variant-numeric:tabular-nums;padding:0;color:var(--ink-muted)}
+.cell .d{font-size:13px;font-weight:600}
+.cell .c{font-size:10px;font-weight:600;line-height:12px}
+.cell.free{background:var(--brand-soft);color:var(--brand-deep)}
+.cell.smoked{background:var(--surface-muted);color:var(--ink-muted)}
+.cell.future{opacity:.4}
+.cell.today{box-shadow:inset 0 0 0 2px var(--ink)}
+.cell .m{position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--lilac)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* diary */
+.entries{display:flex;flex-direction:column;gap:8px}
+.entry{border-radius:14px;background:var(--lilac-soft);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.entry .top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--lilac-deep);font-weight:600}
+.entry p{margin:0;font-size:15px;line-height:22px;overflow-wrap:anywhere}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chipv{font-size:12px;line-height:16px;padding:3px 9px;border-radius:var(--pill);background:var(--surface);color:var(--ink-muted);font-weight:500}
+.reason{border-radius:14px;padding:14px 16px;background:var(--gold-soft);color:var(--ink);font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:600;font-size:18px;line-height:24px;overflow-wrap:anywhere}
+.hbars{display:flex;flex-direction:column;gap:8px}
+.hb{display:grid;grid-template-columns:92px 1fr 24px;gap:8px;align-items:center;font-size:13px}
+.hb .t{height:8px;border-radius:99px;background:var(--surface-muted);overflow:hidden}
+.hb .t i{display:block;height:100%;background:var(--sky);border-radius:99px}
+.hb .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-muted)}
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:15px}
+.kv dt{color:var(--ink-muted)} .kv dd{margin:0;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;z-index:5;pointer-events:none}
+.nav .in{pointer-events:auto;width:100%;max-width:416px;display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:8px 6px;box-shadow:0 8px 24px rgba(15,23,20,.08)}
+.nb{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--ink-muted);padding:4px 0}
+.nw{width:52px;height:32px;border-radius:12px;display:grid;place-items:center;color:var(--ink)}
+.nb[aria-current="page"]{color:var(--brand-deep)}
+.nb[aria-current="page"] .nw{background:var(--brand-soft);color:var(--brand-deep)}
+.sosfab{position:fixed;z-index:6;right:max(16px,calc(50% - 204px));bottom:calc(100px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;border:0;background:var(--sos);color:#fff;font-weight:700;font-size:10px;letter-spacing:.06em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 6px 18px rgba(226,91,74,.35),0 0 0 4px var(--bg)}
+.sosfab:active{transform:scale(.96)}
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(15,23,20,.5);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:440px;max-height:94%;overflow:auto;border-radius:var(--r-sheet) var(--r-sheet) 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.grab{width:36px;height:4px;border-radius:2px;background:var(--line);align-self:center}
+.sheet-top{display:flex;justify-content:flex-end;margin:-4px -6px -10px}
+.xbtn{border:0;background:var(--surface-muted);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;color:var(--ink)}
+.xbtn .ic{width:20px;height:20px}
+.bn-ic{display:flex;gap:10px;align-items:flex-start}
+.bn-ic .ic{margin-top:-1px}
+.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.mood{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 2px;display:flex;flex-direction:column;align-items:center;gap:0}
+.mood b{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:800;font-size:22px;line-height:28px}
+.mood span{font-size:11px;color:var(--ink-muted);font-weight:500}
+.mood[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand-deep)}
+.mood[aria-pressed="true"] span{color:var(--brand-deep)}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:var(--pill);padding:6px 12px;font-size:13px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand)}
+.stepper{display:flex;align-items:center;justify-content:center;gap:22px}
+.stepper button{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:24px;line-height:1}
+.stepper output{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:900;font-size:52px;line-height:56px;min-width:80px;text-align:center;font-variant-numeric:tabular-nums lining-nums}
+/* breath */
+.breath{display:grid;place-items:center;padding-block:14px}
+.bring{width:176px;height:176px;border-radius:50%;background:var(--brand-soft);display:grid;place-items:center}
+.bcore{width:124px;height:124px;border-radius:50%;border:3px solid var(--brand);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 4s ease-in-out}
+.bcore b{font-size:18px;font-weight:600;color:var(--brand-deep);letter-spacing:.04em}
+.bcore span{font-size:12px;color:var(--ink-muted)}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tool{border:0;border-radius:14px;padding:14px 6px 12px;font-size:13px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:6px}
+.tool[aria-pressed="true"]{box-shadow:inset 0 0 0 2px currentColor}
+.game{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.game button{aspect-ratio:1;border-radius:50%;border:0;background:var(--surface-muted)}
+.game button.lit{background:var(--gold)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.toggle input{width:22px;height:22px;accent-color:var(--brand)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(164px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:var(--pill);font-weight:500;z-index:20;font-size:13px;max-width:calc(100% - 32px);text-align:center}
+.sources{font-size:12px;line-height:17px;color:var(--ink-muted)}
+.sources a{color:inherit}
+@media (prefers-reduced-motion: no-preference){.sheet{animation:spring .38s cubic-bezier(.2,1.25,.4,1)}@keyframes spring{from{transform:translateY(40px);opacity:.4}}}
+@media (prefers-reduced-motion: reduce){.bcore{transition:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="appbar"><svg class="ic s20" aria-hidden="true"><use href="#i-leaf-f"/></svg>Clear Air</div>
+  <div class="card"><span class="label">Opening</span><span class="meta">Loading your log…</span></div>
+</div>
+<nav class="nav" id="nav" hidden>
+  <div class="in">
+    <button class="nb" id="nb-home" data-tab="home"><span class="nw"><svg class="ic" aria-hidden="true"><use data-i="home" href="#i-home"/></svg></span>Home</button>
+    <button class="nb" id="nb-body" data-tab="body"><span class="nw"><svg class="ic" aria-hidden="true"><use data-i="milestone" href="#i-milestone"/></svg></span>Milestones</button>
+    <button class="nb" id="nb-you" data-tab="you"><span class="nw"><svg class="ic" aria-hidden="true"><use data-i="profile" href="#i-profile"/></svg></span>You</button>
+  </div>
+</nav>
+<button class="sosfab" id="sos-fab" hidden aria-label="SOS: craving help"><svg class="ic" aria-hidden="true"><use href="#i-sos"/></svg>SOS</button>
+<div id="sheet-root"></div>
+<div id="toast-root"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M 11.9998 20.000564 L 11.9998 11.001077" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.9998 19.000187 C 7.498103 15.999055 6.001445 11.501266 8.201493 7.198863 C 10.198339 3.400556 14.500743 3.201262 16.798484 6.600981 C 19.201734 10.199994 16.798484 16.198349 11.9998 19.000187 Z M 11.9998 19.000187" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.9998 13.998301 C 13.598059 12.200748 15.200225 9.598205 15.399519 7.398157" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M 4.498276 11.200371 L 12.001104 4.600227 L 19.500025 11.200371 L 19.500025 19.199481 C 19.500025 19.80127 18.999836 20.199858 18.398047 20.199858 L 15.201529 20.199858 L 15.201529 14.400796 L 8.800679 14.400796 L 8.800679 20.199858 L 5.600254 20.199858 C 4.998464 20.199858 4.498276 19.80127 4.498276 19.199481 Z M 4.498276 11.200371" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-milestone" viewBox="0 0 24 24"><path d="M 6.000146 19.998382 L 6.000146 5.500729" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 6.000146 5.500729 L 15.198926 5.500729 C 16.601799 5.500729 17.19968 7.200589 16.000009 8.099365 L 14.601045 9.099742 C 13.401374 9.998518 13.999255 11.698378 15.39822 11.698378 L 6.000146 11.698378" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-profile" viewBox="0 0 24 24"><path d="M 15.099934 8.19924 C 15.099934 9.910823 13.712693 11.298064 12.00111 11.298064 C 10.289527 11.298064 8.898378 9.910823 8.898378 8.19924 C 8.898378 6.487657 10.289527 5.100415 12.00111 5.100415 C 13.712693 5.100415 15.099934 6.487657 15.099934 8.19924" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 5.600259 19.199481 C 6.198141 15.600467 8.601391 13.799007 12.00111 13.799007 C 15.400829 13.799007 17.800171 15.600467 18.398053 19.199481" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-sos" viewBox="0 0 24 24"><path d="M 20.198209 12.001454 C 20.198209 16.530506 16.528857 20.199858 11.999805 20.199858 C 7.470754 20.199858 3.801402 16.530506 3.801402 12.001454 C 3.801402 7.472403 7.470754 3.799143 11.999805 3.799143 C 16.528857 3.799143 20.198209 7.472403 20.198209 12.001454" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 16.399902 12.001454 C 16.399902 14.428151 14.430409 16.401551 11.999805 16.401551 C 9.569202 16.401551 7.599709 14.428151 7.599709 12.001454 C 7.599709 9.570851 9.569202 7.601358 11.999805 7.601358 C 14.430409 7.601358 16.399902 9.570851 16.399902 12.001454" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-lungs" viewBox="0 0 24 24"><path d="M 11.9998 19.398319 L 11.9998 11.598503" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.9998 12.200293 C 11.9998 12.200293 11.198716 8.198784 8.201493 7.401608 C 5.399655 6.600525 4.199984 8.800573 4.399278 11.598503 C 4.598572 15.201424 7.201116 18.601143 10.198339 18.800437 C 11.198716 18.89813 11.9998 18.198648 11.9998 17.19827" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.9998 12.200293 C 11.9998 12.200293 12.800883 8.198784 15.798107 7.401608 C 18.599944 6.600525 19.799615 8.800573 19.600321 11.598503 C 19.401027 15.201424 16.798484 18.601143 13.80126 18.800437 C 12.800883 18.89813 11.9998 18.198648 11.9998 17.19827" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-coin" viewBox="0 0 24 24"><path d="M 20.199507 12.000999 C 20.199507 16.53005 16.530155 20.199402 12.001104 20.199402 C 7.472053 20.199402 3.798793 16.53005 3.798793 12.000999 C 3.798793 7.471947 7.472053 3.798688 12.001104 3.798688 C 16.530155 3.798688 20.199507 7.471947 20.199507 12.000999" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.401578 12.000999 C 17.401578 14.982591 14.982697 17.401472 12.001104 17.401472 C 9.019511 17.401472 6.600631 14.982591 6.600631 12.000999 C 6.600631 9.019406 9.019511 6.600525 12.001104 6.600525 C 14.982697 6.600525 17.401578 9.019406 17.401578 12.000999" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 13.400069 9.199161 C 12.79828 8.698973 12.200398 8.601279 11.598609 8.800573 C 10.598232 9.199161 10.398938 10.199538 11.200021 10.801328 C 12.200398 11.50081 13.400069 11.598503 13.400069 12.798174 C 13.400069 13.798551 12.399692 14.501941 11.200021 14.201047" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 12.001104 8.198784 L 12.001104 15.799306" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-life" viewBox="0 0 24 24"><path d="M 20.198209 12.000999 C 20.198209 16.53005 16.528857 20.199402 11.999805 20.199402 C 7.470754 20.199402 3.801402 16.53005 3.801402 12.000999 C 3.801402 7.471947 7.470754 3.798688 11.999805 3.798688 C 16.528857 3.798688 20.198209 7.471947 20.198209 12.000999" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.999805 7.401608 L 11.999805 12.000999 L 15.000937 14.201047" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.201498 4.799065 C 6.200744 6.201937 4.801779 8.800573 4.801779 12.000999" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-sprout" viewBox="0 0 24 24"><path d="M 12.00111 20.000108 L 12.00111 11.000621" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 12.00111 14.001753 C 9.199272 14.001753 6.79993 11.801705 6.999224 8.800573 C 9.801062 8.601279 12.00111 10.598126 12.00111 14.001753 Z M 12.00111 14.001753" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 12.00111 12.200293 C 14.400452 12.200293 16.799794 10.199538 16.799794 7.401608 C 14.001864 7.401608 12.00111 9.601657 12.00111 12.200293 Z M 12.00111 12.200293" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M 20.200817 11.999273 C 20.200817 16.528324 16.527558 20.201584 11.998506 20.201584 C 7.469455 20.201584 3.800103 16.528324 3.800103 11.999273 C 3.800103 7.470221 7.469455 3.800869 11.998506 3.800869 C 16.527558 3.800869 20.200817 7.470221 20.200817 11.999273" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.2002 12.198567 L 10.798835 14.80111 L 16.101616 9.299036" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-diary" viewBox="0 0 24 24"><path d="M 7.001822 4.398751 L 17.400273 4.398751 C 18.201356 4.398751 18.799238 5.00054 18.799238 5.801624 L 18.799238 19.4005 L 11.9998 16.598663 L 5.200361 19.4005 L 5.200361 5.801624 C 5.200361 5.00054 5.798243 4.398751 6.599326 4.398751 L 7.001822 4.398751" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.998668 8.200966 L 15.000931 8.200966" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.998668 11.198189 L 13.598059 11.198189" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M 6.000151 10.998896 L 18.000769 10.998896 C 18.883915 10.998896 19.599028 11.714009 19.599028 12.601062 L 19.599028 18.001535 C 19.599028 18.884681 18.883915 19.599794 18.000769 19.599794 L 6.000151 19.599794 C 5.117006 19.599794 4.401893 18.884681 4.401893 18.001535 L 4.401893 12.601062 C 4.401893 11.714009 5.117006 10.998896 6.000151 10.998896 Z M 6.000151 10.998896" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 4.401893 10.998896 L 19.599028 10.998896 L 19.599028 14.199321 L 4.401893 14.199321 Z M 4.401893 10.998896" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.998506 10.998896 L 11.998506 19.599794" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.998506 10.998896 C 11.998506 10.998896 9.200577 6.399505 7.399116 8.200966 C 6.199445 9.400637 8.598787 10.998896 11.998506 10.998896" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.998506 10.998896 C 11.998506 10.998896 14.800344 6.399505 16.601804 8.200966 C 17.801475 9.400637 15.398226 10.998896 11.998506 10.998896" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-breath" viewBox="0 0 24 24"><path d="M 20.198203 12.001454 C 20.198203 16.530506 16.528851 20.199858 11.9998 20.199858 C 7.470749 20.199858 3.801397 16.530506 3.801397 12.001454 C 3.801397 7.472403 7.470749 3.799143 11.9998 3.799143 C 16.528851 3.799143 20.198203 7.472403 20.198203 12.001454" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 16.59919 12.001454 C 16.59919 14.541474 14.53982 16.600845 11.9998 16.600845 C 9.45978 16.600845 7.40041 14.541474 7.40041 12.001454 C 7.40041 9.461434 9.45978 7.398157 11.9998 7.398157 C 14.53982 7.398157 16.59919 9.461434 16.59919 12.001454" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-game" viewBox="0 0 24 24"><path d="M 8.19889 8.19924 L 15.799411 8.19924 C 18.343339 8.19924 20.398801 10.25861 20.398801 12.79863 L 20.398801 13.799007 C 20.398801 16.342935 18.343339 18.398397 15.799411 18.398397 L 8.19889 18.398397 C 5.658869 18.398397 3.599499 16.342935 3.599499 13.799007 L 3.599499 12.79863 C 3.599499 10.25861 5.658869 8.19924 8.19889 8.19924 Z M 8.19889 8.19924" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 7.999596 11.399665 L 7.999596 15.20188" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 6.100442 13.298819 L 9.898749 13.298819" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-message" viewBox="0 0 24 24"><path d="M 4.999769 6.401687 L 19.001141 6.401687 C 19.899917 6.401687 20.5994 7.10117 20.5994 7.999946 L 20.5994 14.998678 C 20.5994 15.901362 19.899917 16.600845 19.001141 16.600845 L 10.200948 16.600845 L 4.999769 20.000564 L 4.999769 7.999946 C 4.999769 7.10117 5.699251 6.401687 6.601935 6.401687" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-mood" viewBox="0 0 24 24"><path d="M 20.199507 11.999273 C 20.199507 16.528324 16.530155 20.201584 12.001104 20.201584 C 7.472053 20.201584 3.798793 16.528324 3.798793 11.999273 C 3.798793 7.470221 7.472053 3.800869 12.001104 3.800869 C 16.530155 3.800869 20.199507 7.470221 20.199507 11.999273" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.999973 10.20172 L 9.199267 10.20172" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 14.998328 10.20172 L 15.201529 10.20172" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.800679 14.199321 C 9.801056 16.000781 11.000727 16.801864 12.001104 16.801864 C 13.001481 16.801864 14.201152 16.000781 15.201529 14.199321" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M 11.301627 8.198784 C 11.301627 9.359378 10.359866 10.301139 9.199272 10.301139 C 8.038678 10.301139 7.100825 9.359378 7.100825 8.198784 C 7.100825 7.042098 8.038678 6.100337 9.199272 6.100337 C 10.359866 6.100337 11.301627 7.042098 11.301627 8.198784" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 16.901395 15.799306 C 16.901395 16.959899 15.959633 17.901661 14.79904 17.901661 C 13.638446 17.901661 12.700592 16.959899 12.700592 15.799306 C 12.700592 14.638712 13.638446 13.700858 14.79904 13.700858 C 15.959633 13.700858 16.901395 14.638712 16.901395 15.799306" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 4.400588 8.198784 L 19.601631 8.198784" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 4.400588 15.799306 L 19.601631 15.799306" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M 11.998501 5.20156 L 11.998501 18.800437" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 5.199063 12.000999 L 18.801847 12.000999" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M 9.201876 5.600148 L 16.200608 12.000999 L 9.201876 18.401849" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M 6.401337 6.401231 L 17.600872 17.600766" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.600872 6.401231 L 6.401337 17.600766" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M 6.49903 5.500729 L 17.499271 5.500729 C 18.882605 5.500729 20.000214 6.618338 20.000214 8.001672 L 20.000214 17.501347 C 20.000214 18.880773 18.882605 19.998382 17.499271 19.998382 L 6.49903 19.998382 C 5.119604 19.998382 3.998087 18.880773 3.998087 17.501347 L 3.998087 8.001672 C 3.998087 6.618338 5.119604 5.500729 6.49903 5.500729 Z M 6.49903 5.500729" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 7.999596 3.800869 L 7.999596 7.200589" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 15.998705 3.800869 L 15.998705 7.200589" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 3.998087 9.400637 L 20.000214 9.400637" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.19889 12.99965 L 8.398183 12.99965" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 12.001104 12.99965 L 12.200398 12.99965" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 15.799411 12.99965 L 15.998705 12.99965" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.19889 16.200075 L 8.398183 16.200075" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 12.001104 16.200075 L 12.200398 16.200075" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><path d="M 8.2002 11.000621 L 15.800721 11.000621 C 16.906607 11.000621 17.801475 11.89549 17.801475 13.001376 L 17.801475 17.401472 C 17.801475 18.507358 16.906607 19.398319 15.800721 19.398319 L 8.2002 19.398319 C 7.094314 19.398319 6.199445 18.507358 6.199445 17.401472 L 6.199445 13.001376 C 6.199445 11.89549 7.094314 11.000621 8.2002 11.000621 Z M 8.2002 11.000621" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 8.399493 11.000621 L 8.399493 8.398078 C 8.399493 6.401231 10.00166 4.799065 11.998506 4.799065 C 13.999261 4.799065 15.601427 6.401231 15.601427 8.398078 L 15.601427 11.000621" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-timer" viewBox="0 0 24 24"><path d="M 19.201734 12.99965 C 19.201734 16.977712 15.977862 20.201584 11.9998 20.201584 C 8.021738 20.201584 4.801774 16.977712 4.801774 12.99965 C 4.801774 9.025495 8.021738 5.801624 11.9998 5.801624 C 15.977862 5.801624 19.201734 9.025495 19.201734 12.99965" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.9998 12.99965 L 11.9998 9.400637" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.9998 12.99965 L 14.598436 14.601816" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 9.20187 3.601576 L 14.801637 3.601576" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-home-f" viewBox="0 0 24 24"><path d="M 4.48 11.20 L 11.98 4.60 L 19.47 11.20 L 19.47 19.20 C 19.47 19.80 18.97 20.20 18.37 20.20 L 15.18 20.20 L 15.18 14.40 L 8.78 14.40 L 8.78 20.20 L 5.58 20.20 C 4.98 20.20 4.48 19.80 4.48 19.20 Z M 4.48 11.20" fill="currentColor"/></symbol><symbol id="i-milestone-f" viewBox="0 0 24 24"><path d="M 6.000218 19.998382 L 6.000218 5.500729" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 5.66 5.49 L 14.86 5.49 C 16.26 5.49 16.86 7.19 15.66 8.09 L 14.26 9.09 C 13.06 9.99 13.66 11.69 15.06 11.69 L 5.66 11.69 Z M 5.66 5.49" fill="currentColor"/></symbol><symbol id="i-profile-f" viewBox="0 0 24 24"><path d="M 15.08 8.20 C 15.08 9.91 13.69 11.30 11.98 11.30 C 10.27 11.30 8.88 9.91 8.88 8.20 C 8.88 6.49 10.27 5.10 11.98 5.10 C 13.69 5.10 15.08 6.49 15.08 8.20" fill="currentColor"/><path d="M 5.78 19.40 C 6.38 15.50 8.68 13.40 11.98 13.40 C 15.28 13.40 17.58 15.50 18.18 19.40 C 16.58 20.20 14.38 20.59 11.98 20.59 C 9.58 20.59 7.38 20.20 5.78 19.40 Z M 5.78 19.40" fill="currentColor"/></symbol><symbol id="i-check-circle-f" viewBox="0 0 24 24"><path d="M 19.92 11.99 C 19.92 16.52 16.25 20.19 11.72 20.19 C 7.20 20.19 3.53 16.52 3.53 11.99 C 3.53 7.46 7.20 3.79 11.72 3.79 C 16.25 3.79 19.92 7.46 19.92 11.99" fill="currentColor"/><path d="M 8.200272 12.198567 L 10.798908 14.80111 L 16.101688 9.299036" fill="none" style="stroke:var(--knock)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-leaf-f" viewBox="0 0 24 24"><path d="M 11.999872 20.199858 L 11.999872 13.201125" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M 11.95 18.65 C 8.16 16.25 6.55 12.25 8.36 8.45 C 9.75 5.45 13.35 5.25 15.35 7.85 C 17.55 10.85 15.75 15.85 11.95 18.65 Z M 11.95 18.65" fill="currentColor"/></symbol></defs></svg>
+
+<script>
+(function(){
+"use strict";
+/* ---------- helpers (local time) ---------- */
+const pad=n=>String(n).padStart(2,"0");
+const keyOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseKey=k=>{const [y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
+const addDays=(k,n)=>{const d=parseKey(k);d.setDate(d.getDate()+n);return keyOf(d)};
+const diffDays=(a,b)=>Math.round((parseKey(b)-parseKey(a))/864e5);
+const todayKey=()=>keyOf(new Date());
+const fmtDay=k=>parseKey(k).toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+const fmtTime=iso=>new Date(iso).toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const I=(n,c="")=>`<svg class="ic ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const CHECK=`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
+
+/* ---------- content ---------- */
+const MOODS=[{v:1,l:"Rough"},{v:2,l:"Low"},{v:3,l:"Okay"},{v:4,l:"Good"},{v:5,l:"Great"}];
+const TAGS=["Stressed","Anxious","Bored","Tired","Irritable","Restless","Calm","Proud","After coffee","After a meal","With friends","At work"];
+const LIFE_MIN_PER_CIG=20; // UCL 2025 estimate
+const D=24,Y=24*365;
+const MILESTONES=[
+ {h:20/60,when:"20 min",what:"Pulse is settling.",why:"Nicotine narrows blood vessels and speeds the heart. Without a fresh dose, both start easing within minutes."},
+ {h:8,when:"8 hours",what:"Nicotine has more than halved.",why:"Nicotine's half-life is about 2 hours. 8 hours is 4 halvings: ½⁴ = 1/16, so about 6% of the last dose is left."},
+ {h:12,when:"12 hours",what:"Carbon monoxide is back to normal.",why:"CO binds to haemoglobin about 200 times more tightly than oxygen. As it clears, your red blood cells carry oxygen again."},
+ {h:48,when:"48 hours",what:"Smell and taste wake up.",why:"48 hours is 24 nicotine half-lives: ½²⁴ ≈ 1 in 17 million. The nerve endings for taste and smell begin to recover."},
+ {h:72,when:"3 days",what:"Breathing feels easier.",why:"The bronchial tubes relax. Withdrawal often peaks around now, which means it's about to ease."},
+ {h:14*D,when:"2 weeks",what:"Walking feels easier.",why:"Circulation improves from 2 to 12 weeks, so more oxygen reaches your muscles for the same effort."},
+ {h:30*D,when:"1 month",what:"Less coughing, less breathlessness.",why:"Cilia, the tiny hairs that sweep your airways, regrow over 1 to 9 months. An early cough is often them getting back to work."},
+ {h:Y,when:"1 year",what:"Heart risk drops sharply.",why:"Coronary heart disease risk falls to about half that of someone who still smokes."},
+ {h:5*Y,when:"5 years",what:"Stroke risk heads toward a non-smoker's.",why:"Over 5 to 15 years, vessel walls heal and blood becomes less prone to clotting."},
+ {h:10*Y,when:"10 years",what:"Lung cancer risk halves.",why:"Risk of cancers of the mouth, throat, bladder and pancreas falls too."},
+ {h:15*Y,when:"15 years",what:"Heart risk matches a non-smoker's.",why:"The full reset."}
+];
+const FACTS=[
+ "A craving rises, peaks and fades in about 3 to 5 minutes, whether or not you smoke.",
+ "Nicotine reaches your brain about 10 seconds after a drag. That speed is why cues like coffee get wired so tightly to it.",
+ "Your brain grew extra nicotine receptors while you smoked. They scale back down over the first few weeks, and cravings ease as they do.",
+ "A longer exhale than inhale slows your heart through the vagus nerve. That's why 4-in, 6-out calms you.",
+ "Most people who stay quit had tried before. Each attempt teaches you your triggers.",
+ "Your sense of smell is sharpening. Food, rain and coffee may start to seem louder.",
+ "Carbon monoxide takes up the seats on your red blood cells that oxygen should use. Those seats are free again now."
+];
+const M=(title,sub,bul,mins,kind,extra)=>Object.assign({title,sub,bul,mins,kind},extra||{});
+const MISSIONS=[
+ M("Write your reasons.","Two minutes. No polish.",["Keep it where you can see it.","Shame-free. Private to you.","Closes the identity loop."],2,"text",{reasons:true,gift:"a reason card",ph:"I'm quitting because…"}),
+ M("Clear the kit.","Lighters, ashtrays, the spare pack.",["Fewer cues, fewer cravings.","Check bags and the car too."],5,"do"),
+ M("Name your triggers.","The three moments you'd usually light up.",["Coffee, after meals, stress?","Naming them takes away the surprise."],2,"text",{ph:"1. \n2. \n3. "}),
+ M("Swap one ritual.","Pick what replaces your most common cigarette.",["Same cue, new action.","Small and easy beats heroic."],2,"text",{ph:"After coffee, I'll…"}),
+ M("Tell one person.","Someone who'll back you, not police you.",["Ask them to be your SOS buddy.","Add them under You → Settings."],3,"do"),
+ M("Walk it off.","Ten minutes, next time a craving hits.",["Movement lowers craving strength.","Outside if you can."],10,"do"),
+ M("Box breathe, twice.","Four in, hold four, four out, hold four.",["It's the breath behind the SOS button.","Works in any meeting."],2,"do"),
+ M("Stock the drawer.","Gum, mints, nuts, a stress ball.",["Hands and mouth miss the habit.","Keep it where the pack was."],5,"do"),
+ M("Drink the water.","Eight glasses today.",["Helps with withdrawal headaches.","A glass is a pause."],1,"do"),
+ M("Price the prize.","Pick what the money saved will buy.",["Make it specific.","Watch the saved counter climb."],2,"text",{ph:"With the money I'll…"}),
+ M("Change the route.","Skip the spot where you used to smoke.",["Places are cues too.","Just for this week."],1,"do"),
+ M("Write to Day 1 you.","Three lines. What's hard, what's easier.",["You're further than you feel.","Read it on a bad day."],3,"text"),
+ M("Sleep on time.","Lights out 30 minutes earlier.",["Tired brains crave more.","Sleep settles as withdrawal passes."],1,"do"),
+ M("Notice one change.","Stairs, taste, smell, mornings.",["Two weeks in. Something has shifted.","Write down what you noticed."],2,"text"),
+ M("Plan the hard night.","A party, a drink, a bad day. What's your exit line?",["Decide now, not in the moment.","Short and true works best."],3,"text",{ph:"If someone offers, I'll say…"}),
+ M("Air something out.","A jacket, the car, the curtains.",["The smell is a cue.","Fresh fabric, fresh start."],15,"do"),
+ M("Play the 60s game.","Next craving, play instead.",["Tap SOS, then 60s game.","A minute of focus outlasts the peak."],1,"do"),
+ M("Thank your buddy.","One message. Nothing more.",["Support grows when it's noticed."],2,"do"),
+ M("Move for 20 minutes.","Any pace. Any kind.",["Exercise cuts cravings for up to an hour.","Lungs are already working better."],20,"do"),
+ M("Reread your reasons.","Add one you didn't know on Day 1.",["New reasons show up with time."],2,"text",{reasons:true,gift:"a reason card",ph:"A new reason…"}),
+ M("Name your new routine.","One line on what fills the gaps now.",["Three weeks is when habits start to set."],2,"text"),
+ M("Eat something slowly.","A proper meal, no screen.",["Taste is coming back. Notice it."],20,"do"),
+ M("List what's easier.","Anything, however small.",["Proof beats willpower."],2,"text"),
+ M("Taste test.","Eat something you love and pay attention.",["Smell and taste recover in weeks."],5,"do"),
+ M("Help someone else.","Share one thing that worked for you.",["Teaching it makes it stick."],5,"do"),
+ M("Rehearse the no.","Someone offers you one. Say your answer out loud.",["Practised words come out easier."],1,"do"),
+ M("Spend a little.","Use some of what you've saved on yourself.",["A reward you can feel."],10,"do"),
+ M("Advise Day 1 you.","What would you tell someone starting today?",["Four weeks: most withdrawal has passed."],3,"text"),
+ M("Read your patterns.","Open You and see when cravings hit.",["Know the hour, own the hour."],2,"do"),
+ M("Write your identity line.","\"I'm someone who…\"",["Thirty days. This is who you are now."],2,"text",{reasons:true,gift:"a reason card",ph:"I'm someone who…"})
+];
+
+
+/* ---------- on-device store (replaces the Claude runtime's db) ---------- */
+const LocalDB=(()=>{
+  const KEY="clearair.v1";let mem={},ok=true;
+  try{mem=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){ok=false}
+  const listeners=new Set(),segs=p=>p.split("/"),clone=v=>JSON.parse(JSON.stringify(v));
+  const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(mem))}catch(e){throw {code:"quota_exceeded",message:String(e)}}};
+  const fire=()=>setTimeout(()=>listeners.forEach(l=>l()),0);
+  const snap=p=>{const d=mem[p];return{id:segs(p).pop(),exists:d!==undefined,data:()=>d===undefined?undefined:clone(d)}};
+  const q=(col,o)=>{const n=segs(col).length+1;let docs=Object.keys(mem).filter(p=>p.startsWith(col+"/")&&segs(p).length===n).map(snap);
+    if(o.order){const[f,dir]=o.order;docs.sort((a,b)=>{const x=a.data()[f],y=b.data()[f];return(x<y?-1:x>y?1:0)*(dir==="desc"?-1:1)})}else docs.sort((a,b)=>a.id<b.id?-1:1);
+    if(o.limit)docs=docs.slice(0,o.limit);return{docs,size:docs.length,empty:!docs.length}};
+  const merge=(a,b)=>{const o={...a};for(const k in b){if(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])&&o[k]&&typeof o[k]==="object"&&!Array.isArray(o[k]))o[k]=merge(o[k],b[k]);else o[k]=b[k]}return o};
+  const rid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  const doc=p=>({id:segs(p).pop(),path:p,
+    get:async()=>snap(p),
+    set:async d=>{mem[p]=clone(d);persist();fire()},
+    update:async d=>{if(!(p in mem))throw{code:"invalid_argument"};mem[p]=merge(mem[p],clone(d));persist();fire()},
+    delete:async()=>{delete mem[p];persist();fire()},
+    onSnapshot:next=>{const l=()=>next(snap(p));listeners.add(l);setTimeout(l,0);return()=>listeners.delete(l)},
+    collection:sub=>col(p+"/"+sub)});
+  const col=(p,o={})=>({path:p,
+    orderBy:(f,dir="asc")=>col(p,{...o,order:[f,dir]}),limit:n=>col(p,{...o,limit:n}),
+    get:async()=>q(p,o),
+    onSnapshot:next=>{const l=()=>next(q(p,o));listeners.add(l);setTimeout(l,0);return()=>listeners.delete(l)},
+    doc:id=>doc(p+"/"+(id||rid())),
+    add:async d=>{const r=doc(p+"/"+rid());await r.set(d);return r}});
+  return{ok,doc,collection:col,
+    dump:()=>clone(mem),
+    replaceAll:data=>{mem=clone(data);persist();fire()}};
+})();
+window.__store=()=>LocalDB.dump();
+
+/* ---------- state ---------- */
+const S={mode:"loading",tab:"home",profile:null,days:{},checkins:[],missions:{},reasons:[],calMonth:null,refs:null};
+
+/* ---------- derived ---------- */
+const smoked=k=>!!(S.days[k]&&S.days[k].count>0);
+function streaks(){
+  const p=S.profile,t=todayKey();
+  if(!p||p.quitDate>t) return {current:0,longest:p?(p.bestStreak||0):0,free:0,elapsed:0};
+  let cur=0,best=0,free=0;
+  for(let k=p.quitDate;k<=t;k=addDays(k,1)){ if(smoked(k)){cur=0}else{cur++;free++;if(cur>best)best=cur} }
+  return {current:cur,longest:Math.max(best,p.bestStreak||0),free,elapsed:diffDays(p.quitDate,t)+1};
+}
+function smokedSince(k0){let n=0;const t=todayKey();for(const k in S.days){if(k>=k0&&k<=t)n+=S.days[k].count||0}return n}
+function avoided(){const p=S.profile;if(!p||p.quitDate>todayKey())return 0;return Math.max(0,Math.round(p.perDay*streaks().elapsed-smokedSince(p.quitDate)))}
+function clockStart(){
+  const p=S.profile;if(!p)return null;
+  let start=parseKey(p.quitDate).getTime();const t=todayKey();
+  const ks=Object.keys(S.days).filter(k=>k>=p.quitDate&&k<=t&&smoked(k)).sort();
+  if(ks.length){const k=ks[ks.length-1];const at=S.days[k].lastAt?Date.parse(S.days[k].lastAt):parseKey(addDays(k,1)).getTime()-60000;start=Math.max(start,at)}
+  return start;
+}
+function hoursClean(){const s=clockStart();return s==null?0:Math.max(0,(Date.now()-s)/36e5)}
+function compact(h){
+  if(h<1) return `${Math.max(1,Math.round(h*60))}m`;
+  if(h<72) return `${Math.round(h)}h`;
+  if(h<24*60) return `${Math.round(h/24)}d`;
+  if(h<Y*2) return `${Math.round(h/24/30.4)}mo`;
+  return `${Math.round(h/Y)}y`;
+}
+function dh(mins){const d=Math.floor(mins/1440),h=Math.floor(mins%1440/60),m=Math.round(mins%60);return d?`${d}d ${h}h`:h?`${h}h ${m}m`:`${m}m`}
+function longDur(h){if(h<1)return `${Math.max(1,Math.round(h*60))} minutes`;if(h<48)return `${Math.round(h)} hours`;if(h<24*60)return `${Math.round(h/24)} days`;if(h<Y*2)return `${Math.round(h/24/30.4)} months`;return `${(h/Y).toFixed(1)} years`}
+const money=n=>(S.profile&&S.profile.currency||"₹")+Math.round(n).toLocaleString("en-IN");
+const checkinsOn=k=>S.checkins.filter(c=>keyOf(new Date(c.at))===k);
+function dayNum(){const p=S.profile;if(!p)return 0;const t=todayKey();return p.quitDate>t?0:diffDays(p.quitDate,t)+1}
+function missionToday(){const n=dayNum();const i=n<1?0:(n-1)%MISSIONS.length;return {i,n:i+1,m:MISSIONS[i]}}
+function nextMilestone(h){return MILESTONES.find(m=>m.h>h)}
+
+/* ---------- storage ---------- */
+async function initStore(){
+  if(!LocalDB.ok){ loadExample(); return; }
+  const base=LocalDB.doc("data/users/local/profile");
+  S.refs={base,days:base.collection("days"),checkins:base.collection("checkins"),meta:base.collection("meta")};
+  const got={p:0,d:0,c:0,m:0};
+  const settle=()=>{ if(got.p&&got.d&&got.c&&got.m){ S.mode=S.profile?"live":"setup"; render(); } };
+  base.onSnapshot(s=>{S.profile=s.exists?s.data():null;got.p=1;settle()},onErr);
+  S.refs.days.onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());S.days=m;got.d=1;settle()},onErr);
+  S.refs.checkins.orderBy("at","desc").limit(400).onSnapshot(s=>{S.checkins=s.docs.map(d=>Object.assign({id:d.id},d.data()));got.c=1;settle()},onErr);
+  S.refs.meta.onSnapshot(s=>{S.missions={};S.reasons=[];s.docs.forEach(d=>{const v=d.data();if(d.id==="missions")S.missions=v.done||{};if(d.id==="reasons")S.reasons=v.items||[]});got.m=1;settle()},onErr);
+}
+function onErr(e){toast(e&&e.code==="quota_exceeded"?"Storage is full.":"Couldn't reach your saved data. Changes may not save.")}
+function loadExample(){
+  S.mode="example";
+  const t=todayKey(),q=addDays(t,-11);
+  S.profile={quitDate:q,startDate:q,perDay:10,price:18,currency:"₹",bestStreak:0,buddyName:"",buddyPhone:""};
+  S.days={};
+  S.checkins=[
+    {id:"e1",at:new Date(Date.now()-2*36e5).toISOString(),mood:4,tags:["Proud","Calm"],note:"Walked past the tea stall without stopping."},
+    {id:"e2",at:new Date(Date.now()-26*36e5).toISOString(),craving:true,intensity:4,tags:["Stressed","At work"],note:"Big review. Rode it out with the breathing."},
+    {id:"e3",at:new Date(Date.now()-50*36e5).toISOString(),craving:true,intensity:3,tags:["After coffee"],note:""}
+  ];
+  S.reasons=[{id:"r1",text:"I want to run with my niece without stopping for breath.",at:new Date().toISOString()}];
+  S.missions={};S.missions[addDays(t,-11)]={n:1};
+  render();
+}
+async function write(fn,okMsg){
+  if(S.mode==="example"){toast("This browser is blocking storage, so nothing can be saved.");return false}
+  try{await fn();if(okMsg)toast(okMsg);return true}
+  catch(e){toast(e&&e.code==="quota_exceeded"?"Storage is full.":"That didn't save. Try again.");return false}
+}
+
+/* ---------- render ---------- */
+const app=document.getElementById("app");
+function render(){
+  const nav=document.getElementById("nav");
+  if(S.mode==="loading")return;
+  const fab=document.getElementById("sos-fab");fab.hidden=S.mode==="setup";
+  if(S.mode==="setup"){nav.hidden=true;app.innerHTML=setupView();bindSetup();return}
+  nav.hidden=false;
+  document.querySelectorAll(".nb[data-tab]").forEach(b=>{const on=b.dataset.tab===S.tab,u=b.querySelector("use");if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");u.setAttribute("href","#i-"+u.dataset.i+(on?"-f":""))});
+  const banner=S.mode==="example"?`<div class="notice">Example data. This browser is blocking storage, so your log can’t be saved here. Turn off private browsing and reopen Clear Air.</div>`:"";
+  app.innerHTML=banner+(S.tab==="home"?homeView():S.tab==="body"?bodyView():youView());
+  bindView();tickClock();
+}
+
+/* HOME */
+function heroBlock(){
+  const p=S.profile,t=todayKey(),st=streaks();
+  if(p.quitDate>t){
+    return `<section class="hero"><div class="top"><span class="label">Quit day in</span><span class="pill">${esc(fmtDay(p.quitDate))}</span></div>
+      <div class="bigrow"><span class="big" id="clk-d">0</span><span class="bigunit" id="clk-du">days</span></div>
+      <div class="clock"><div><b id="clk-h">00</b><span>hrs</span></div><div><b id="clk-m">00</b><span>min</span></div><div><b id="clk-s">00</b><span>sec</span></div></div>
+      <div class="foot">Use these days to notice when you smoke. Check in and tag what's going on.</div></section>`;
+  }
+  return `<section class="hero"><div class="top"><span class="label">Smoke-free for</span><span class="pill">Day ${dayNum()}</span></div>
+    <div class="bigrow"><span class="big" id="clk-d">0</span><span class="bigunit" id="clk-du">days</span></div>
+    <div class="clock"><div><b id="clk-h">00</b><span>hrs</span></div><div><b id="clk-m">00</b><span>min</span></div><div><b id="clk-s">00</b><span>sec</span></div></div>
+    <div class="foot num">Best streak ${st.longest} ${st.longest===1?"day":"days"} · ${st.free} of ${st.elapsed} days smoke-free</div></section>`;
+}
+function bentoBlock(){
+  const p=S.profile,av=avoided(),h=p.quitDate>todayKey()?0:hoursClean(),nx=nextMilestone(h);
+  return `<section class="bento">
+    <div class="well t-brand">${I("lungs")}<div><b>${av.toLocaleString("en-IN")}</b><span>not smoked</span></div></div>
+    <div class="well t-gold">${I("coin")}<div><b>${money(av*p.price)}</b><span>saved</span></div></div>
+    <div class="well t-sky">${I("life")}<div><b>${dh(av*LIFE_MIN_PER_CIG)}</b><span>life back</span></div></div>
+    <button class="well t-lilac" id="tile-next" style="border:0;text-align:left">${I("sprout")}<div><b>${nx?compact(nx.h-h):"Done"}</b><span>next milestone</span></div></button></section>`;
+}
+function missionPeek(){
+  const {m}=missionToday(),done=!!S.missions[todayKey()];
+  return `<button class="peek" id="open-mission"><span class="tick ${done?"on":""}">${I(done?"check-circle-f":"check-circle")}</span><span style="min-width:0"><span class="title" style="display:block">Today's mission</span><span class="meta">${esc(done?"Done. That's the work today.":m.title.replace(/\.$/,"")+". "+m.mins+" min.")}</span></span><span class="meta">${I("chevron-right","s20")}</span></button>`;
+}
+function checkPrompt(){
+  if(checkinsOn(todayKey()).length) return "";
+  return `<section class="banner t-lilac"><div class="bn-ic">${I("mood")}<div><div class="title" style="color:var(--ink)">Just checking in. How you feeling?</div><div style="margin-top:2px">Ten seconds. It builds your diary.</div></div></div><div class="row" style="margin-top:12px;padding-left:34px"><button class="btn" style="background:var(--surface)" id="prompt-checkin">Check in</button></div></section>`;
+}
+function logBlock(){
+  const t=todayKey(),d=S.days[t];
+  const st=d&&d.count>0?`<span class="dot m"></span>${d.count} logged today`:d?`<span class="dot"></span>Confirmed smoke-free today`:`<span class="dot"></span>Smoke-free so far today`;
+  return `<section class="card"><span class="label">Did you smoke today?</span><div class="status">${st}</div>
+    <div class="row"><button class="btn primary grow" id="log-free">No</button><button class="btn grow" id="log-smoked">${d&&d.count>0?"Change count":"Yes, log it"}</button></div>
+    <span class="meta">Days count as smoke-free unless you log otherwise.</span></section>`;
+}
+function homeView(){
+  return `<div class="appbar">${I("leaf-f","s20")}Clear Air</div>`+installHint()+heroBlock()+bentoBlock()+missionPeek()+checkPrompt()+logBlock();
+}
+
+/* BODY */
+function bodyView(){
+  const p=S.profile,pre=p.quitDate>todayKey(),h=pre?0:hoursClean();
+  let latest=-1;MILESTONES.forEach((m,i)=>{if(h>=m.h)latest=i});
+  const nx=nextMilestone(h);
+  const nodes=MILESTONES.map((m,i)=>{
+    const cls=i<latest?"done":i===latest?"done latest":m===nx?"next":"";
+    return `<div class="node ${cls}"><div class="ring">${I(i<=latest?"check-circle-f":m===nx?"milestone":"sprout")}</div><details class="ncard"><summary><span class="when">${esc(m.when)}</span><span class="what">${esc(m.what)}</span></summary><p class="why">${esc(m.why)}</p></details></div>`;
+  }).join("");
+  return `<div class="head"><span class="kicker">Milestones</span><h1 class="screen-title">What's returning.</h1><span class="meta">${pre?"The clock starts on your quit day.":"Counted from your last cigarette, "+esc(longDur(h))+" ago. Tap any stage for the science."}</span></div>
+    <div class="tl">${nodes}</div>
+    ${nx?`<div class="banner t-gold" style="text-align:center">Next unlock in <b class="num">${esc(longDur(nx.h-h))}</b></div>`:""}
+    <p class="sources">Based on <a href="https://www.who.int/news-room/questions-and-answers/item/tobacco-health-benefits-of-smoking-cessation" target="_blank" rel="noopener">WHO</a> and <a href="https://www.nhs.uk/better-health/quit-smoking/" target="_blank" rel="noopener">NHS</a> guidance. These are averages, so your timing may differ.</p>`;
+}
+
+/* YOU */
+function calendarBlock(){
+  const t=todayKey();if(!S.calMonth)S.calMonth=t.slice(0,7);
+  const [y,m]=S.calMonth.split("-").map(Number),first=new Date(y,m-1,1),days=new Date(y,m,0).getDate(),lead=(first.getDay()+6)%7;
+  const diary=new Set(S.checkins.map(c=>keyOf(new Date(c.at)))),p=S.profile;
+  let cells="";for(let i=0;i<lead;i++)cells+=`<div></div>`;
+  for(let d=1;d<=days;d++){
+    const k=`${y}-${pad(m)}-${pad(d)}`;let cls="cell",extra="";
+    if(k>t)cls+=" future";else if(smoked(k)){cls+=" smoked";extra=`<span class="c">${S.days[k].count}</span>`}else if(k>=p.quitDate)cls+=" free";
+    if(k===t)cls+=" today";
+    cells+=`<button class="${cls}" data-day="${k}" ${k>t?"disabled":""} aria-label="${esc(fmtDay(k))}"><span class="d">${d}</span>${extra}${diary.has(k)?`<span class="m"></span>`:""}</button>`;
+  }
+  return `<section class="card"><div class="calhead"><button class="iconbtn" id="cal-prev" aria-label="Previous month">${I("chevron-right","s20 flip")}</button><span class="title">${esc(first.toLocaleDateString(undefined,{month:"long",year:"numeric"}))}</span><button class="iconbtn" id="cal-next" aria-label="Next month" ${S.calMonth>=t.slice(0,7)?"disabled":""}>${I("chevron-right","s20")}</button></div>
+    <div class="grid7">${["M","T","W","T","F","S","S"].map(x=>`<div class="dow">${x}</div>`).join("")}${cells}</div>
+    <div class="legend"><span><i class="sw" style="background:var(--brand-soft)"></i>Smoke-free</span><span><i class="sw" style="background:var(--surface-muted);border:1px solid var(--line)"></i>Smoked (count)</span><span><i class="sw" style="background:var(--lilac);border-radius:50%;width:6px;height:6px"></i>Diary</span></div>
+    <span class="meta">Tap a past day to change what you logged.</span></section>`;
+}
+function entryHTML(c){
+  const head=c.craving?`Craving${c.intensity?` · ${c.intensity}/5`:""}`:(MOODS[(c.mood||3)-1].l+(c.mood?` · ${c.mood}/5`:""));
+  return `<div class="entry"><div class="top"><span>${esc(head)}</span><span class="num">${esc(fmtDay(keyOf(new Date(c.at))))}, ${esc(fmtTime(c.at))}</span></div>
+    ${c.tags&&c.tags.length?`<div class="chips">${c.tags.map(t=>`<span class="chipv">${esc(t)}</span>`).join("")}</div>`:""}
+    ${c.note?`<p>${esc(c.note)}</p>`:""}</div>`;
+}
+function patternsBlock(){
+  const cr=S.checkins.filter(c=>c.craving);
+  if(!cr.length) return `<section class="card"><span class="label">Craving patterns</span><span class="meta">Each time you use SOS and tap "I'm through it", the craving is logged. After a few, this shows which hours and situations bring them on.</span></section>`;
+  const tc={};cr.forEach(c=>(c.tags||[]).forEach(t=>tc[t]=(tc[t]||0)+1));
+  const top=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const B=[["Morning",5,12],["Afternoon",12,17],["Evening",17,21],["Night",21,29]].map(([n,a,b])=>[n,cr.filter(c=>{let hr=new Date(c.at).getHours();if(hr<5)hr+=24;return hr>=a&&hr<b}).length]);
+  const bars=r=>{const mx=Math.max(1,...r.map(x=>x[1]));return `<div class="hbars">${r.map(([n,v])=>`<div class="hb"><span>${esc(n)}</span><span class="t"><i style="width:${(v/mx*100).toFixed(0)}%"></i></span><span class="v">${v}</span></div>`).join("")}</div>`};
+  const ints=cr.filter(c=>c.intensity);const avg=ints.length?(ints.reduce((a,c)=>a+c.intensity,0)/ints.length).toFixed(1):null;
+  return `<section class="card"><span class="label">Craving patterns</span><span class="meta num">${cr.length} ridden out${avg?` · average strength ${avg}/5`:""}</span>${bars(B)}${top.length?`<span class="label" style="margin-top:4px">What was going on</span>${bars(top)}`:""}</section>`;
+}
+function youView(){
+  const p=S.profile,st=streaks(),av=avoided(),done=Object.keys(S.missions).length;
+  return `<div class="head"><span class="kicker">You</span><h1 class="screen-title">Your record.</h1></div>
+    <section class="card"><dl class="kv">
+      <dt>Current streak</dt><dd>${st.current} ${st.current===1?"day":"days"}</dd>
+      <dt>Longest streak</dt><dd>${st.longest} ${st.longest===1?"day":"days"}</dd>
+      <dt>Smoke-free days</dt><dd>${st.free} of ${st.elapsed}</dd>
+      <dt>Missions done</dt><dd>${done}</dd>
+      <dt>Quit date</dt><dd>${esc(fmtDay(p.quitDate))}</dd></dl>
+      <span class="meta num">Saved = (${p.perDay}/day × ${st.elapsed} days − ${smokedSince(p.quitDate)} smoked) × ${money(p.price)} = ${money(av*p.price)}. Life back uses ${LIFE_MIN_PER_CIG} min per cigarette not smoked, from a <a href="https://www.ucl.ac.uk/news/2024/dec/each-cigarette-smoked-takes-20-minutes-life-study-finds" target="_blank" rel="noopener" style="color:inherit">2024 UCL study</a>.</span></section>
+    ${calendarBlock()}
+    <section class="card"><div class="calhead"><span class="label">Reasons</span><button class="btn" style="padding:6px 12px;font-size:13px;display:flex;gap:4px;align-items:center" id="add-reason">${I("plus","s20")}Add</button></div>
+      ${S.reasons.length?S.reasons.slice().reverse().map(r=>`<div class="reason">${esc(r.text)}</div>`).join(""):`<span class="meta">Mission 1 asks for your reasons. They'll live here, where you can see them.</span>`}</section>
+    <section class="card"><div class="calhead"><span class="label">Diary</span><button class="btn" style="padding:6px 12px;font-size:13px;display:flex;gap:6px;align-items:center" id="you-checkin">${I("mood","s20")}Check in</button></div>
+      ${S.checkins.length?`<div class="entries">${S.checkins.slice(0,12).map(entryHTML).join("")}</div>`:`<span class="meta">Check-ins and ridden-out cravings show up here.</span>`}</section>
+    ${patternsBlock()}
+    <button class="btn ghost block" id="open-settings" style="display:flex;gap:8px;justify-content:center;align-items:center">${I("settings","s20")}Settings</button>`;
+}
+
+/* SETUP */
+function setupView(){
+  return `<div class="appbar">${I("leaf-f","s20")}Clear Air</div>
+  <section class="hero"><span class="label">Welcome</span><h1 class="screen-title" style="color:var(--hero-ink)">A calm companion. Not a lecture.</h1><div class="foot">Three numbers set your timer, your savings and your health clock. You can change them later.</div></section>
+  <form class="card" id="setup-form">
+    <label class="f" for="s-quit">Quit date<input type="date" id="s-quit" value="${todayKey()}" required></label>
+    <label class="f" for="s-per">Cigarettes a day before quitting<input type="number" id="s-per" min="1" max="100" value="10" required></label>
+    <label class="f" for="s-price">Price per cigarette (₹)<input type="number" id="s-price" min="0" step="0.5" value="18" required></label>
+    <button class="btn primary block" type="submit">Start</button></form>`;
+}
+function bindSetup(){
+  document.getElementById("setup-form").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const q=document.getElementById("s-quit").value,per=+document.getElementById("s-per").value,pr=+document.getElementById("s-price").value;
+    if(!q||!(per>0))return toast("Add a quit date and a daily count.");
+    await write(()=>S.refs.base.set({quitDate:q,startDate:q,perDay:per,price:pr||0,currency:"₹",bestStreak:0,buddyName:"",buddyPhone:"",createdAt:new Date().toISOString()}),"You're set. The clock is running.");
+    try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  });
+}
+
+/* live clock: updates text only, never writes */
+function tickClock(){
+  const el=document.getElementById("clk-d");if(!el||!S.profile)return;
+  const p=S.profile,pre=p.quitDate>todayKey();
+  let ms=pre?parseKey(p.quitDate).getTime()-Date.now():Date.now()-clockStart();ms=Math.max(0,ms);
+  const s=Math.floor(ms/1000),d=Math.floor(s/86400);
+  el.textContent=d;document.getElementById("clk-du").textContent=d===1?"day":"days";
+  document.getElementById("clk-h").textContent=pad(Math.floor(s%86400/3600));
+  document.getElementById("clk-m").textContent=pad(Math.floor(s%3600/60));
+  document.getElementById("clk-s").textContent=pad(s%60);
+}
+setInterval(tickClock,1000);
+let lastDay=todayKey();setInterval(()=>{if(todayKey()!==lastDay){lastDay=todayKey();if(!root.innerHTML)render()}},60000);
+
+/* ---------- bindings ---------- */
+function bindView(){
+  const $=id=>document.getElementById(id),on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
+  on("log-free",()=>saveDay(todayKey(),0));
+  on("log-smoked",()=>openDay(todayKey(),true));
+  on("prompt-checkin",openCheckin);on("you-checkin",openCheckin);
+  on("open-mission",openMission);on("tile-next",()=>{S.tab="body";render();window.scrollTo(0,0)});on("open-settings",openSettings);on("add-reason",openAddReason);
+  on("cal-prev",()=>{const [y,m]=S.calMonth.split("-").map(Number),d=new Date(y,m-2,1);S.calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()});
+  on("cal-next",()=>{const [y,m]=S.calMonth.split("-").map(Number),d=new Date(y,m,1);S.calMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()});
+  document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>openDay(b.dataset.day));
+}
+document.querySelectorAll(".nb[data-tab]").forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;render();window.scrollTo(0,0)});
+document.getElementById("sos-fab").onclick=openSOS;
+
+/* ---------- sheets ---------- */
+const root=document.getElementById("sheet-root");
+let cleanup=null;
+function sheet(html,bind){
+  closeSheet();
+  root.innerHTML=`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div class="sheet-top"><button class="xbtn" id="sheet-x" aria-label="Close">${I("close")}</button></div>${html}</div></div>`;
+  document.getElementById("scrim").addEventListener("click",e=>{if(e.target.id==="scrim")closeSheet()});
+  document.getElementById("sheet-x").onclick=closeSheet;
+  bind&&bind();
+}
+function closeSheet(){if(cleanup){cleanup();cleanup=null}root.innerHTML=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+
+/* SOS */
+function openSOS(){
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let timers=[];const clear=()=>{timers.forEach(clearInterval);timers=[]};
+  sheet(`<h2 class="screen-title">Craving hit.</h2><span class="meta" style="margin-top:-8px">This usually lasts 3–5 minutes. Ride it.</span>
+    <div id="sos-stage"></div>
+    <div class="tools"><button class="tool t-brand" data-tool="breathe" aria-pressed="true">${I("breath")}Breathe</button><button class="tool t-gold" data-tool="game" aria-pressed="false">${I("game")}60s game</button><button class="tool t-lilac" data-tool="buddy" aria-pressed="false">${I("message")}Text a buddy</button></div>
+    <button class="btn dark block" id="sos-done">I'm through it</button>
+    <button class="link" id="sos-smoked" style="align-self:center">I smoked. Log it.</button>`,()=>{
+    const stage=document.getElementById("sos-stage");
+    const breathe=()=>{
+      clear();
+      stage.innerHTML=`<div class="breath"><div class="bring"><div class="bcore" id="bcore"><b id="bph">IN</b><span id="bsec">4 seconds</span></div></div></div><div class="meta" style="text-align:center" id="bcyc">Box breath · 4 cycles left</div>`;
+      const phases=[["IN",1.28],["HOLD",1.28],["OUT",1],["HOLD",1]];let step=0,sec=4,cyc=4;
+      const core=document.getElementById("bcore");
+      const show=()=>{const [ph,sc]=phases[step];document.getElementById("bph").textContent=ph;document.getElementById("bsec").textContent=`${sec} second${sec===1?"":"s"}`;if(!reduce)core.style.transform=`scale(${sc})`;};
+      requestAnimationFrame(show);
+      timers.push(setInterval(()=>{
+        sec--; if(sec===0){sec=4;step=(step+1)%4;if(step===0){cyc--;if(cyc===0){clear();document.getElementById("bph").textContent="DONE";document.getElementById("bsec").textContent="Nice work";core.style.transform="scale(1)";document.getElementById("bcyc").textContent="Four cycles. Go again, or tap I'm through it.";return}document.getElementById("bcyc").textContent=`Box breath · ${cyc} cycle${cyc===1?"":"s"} left`}}
+        show();
+      },1000));
+    };
+    const game=()=>{
+      clear();let score=0,left=60,lit=-1;
+      stage.innerHTML=`<div class="row" style="justify-content:space-between;align-items:baseline"><span class="title">Tap the gold dot</span><span class="meta num" id="g-t">60s · 0 hits</span></div><div class="game" id="g">${Array.from({length:16},(_,i)=>`<button data-i="${i}" aria-label="Dot ${i+1}"></button>`).join("")}</div>`;
+      const g=document.getElementById("g"),btns=[...g.children];
+      const move=()=>{if(lit>=0)btns[lit].classList.remove("lit");let n;do{n=Math.floor(Math.random()*16)}while(n===lit);lit=n;btns[lit].classList.add("lit")};
+      g.onclick=e=>{const b=e.target.closest("button");if(!b||left<=0)return;if(+b.dataset.i===lit){score++;move()}document.getElementById("g-t").textContent=`${left}s · ${score} hits`};
+      move();
+      timers.push(setInterval(()=>{left--;document.getElementById("g-t").textContent=`${left}s · ${score} hits`;if(left<=0){clear();btns[lit].classList.remove("lit");document.getElementById("g-t").textContent=`Time. ${score} hits. A minute of the craving is gone.`}},1000));
+    };
+    const buddy=()=>{
+      clear();const p=S.profile||{};
+      if(!p.buddyPhone){stage.innerHTML=`<div class="banner t-lilac"><div class="title" style="color:var(--ink)">No buddy yet.</div><div>Add a name and number in You → Settings. Then this button puts them one tap away.</div></div>`;return}
+      stage.innerHTML=`<div class="banner t-lilac" style="display:flex;flex-direction:column;gap:10px"><div class="title" style="color:var(--ink)">${esc(p.buddyName||"Your buddy")}</div><div class="num" style="font-size:18px;color:var(--ink);user-select:all">${esc(p.buddyPhone)}</div>
+        <div class="row"><a class="btn" style="background:var(--surface);text-decoration:none" href="sms:${encodeURIComponent(p.buddyPhone)}?&body=${encodeURIComponent("Craving hit. Talk to me for 5 minutes?")}">Open messages</a><button class="btn" style="background:var(--surface)" id="b-copy">Copy number</button></div>
+        <span class="meta">Suggested text: "Craving hit. Talk to me for 5 minutes?"</span></div>`;
+      document.getElementById("b-copy").onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(p.buddyPhone).then(()=>toast("Number copied"),()=>toast("Select the number to copy it"))};
+    };
+    const tools={breathe,game,buddy};
+    root.querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{root.querySelectorAll("[data-tool]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));tools[b.dataset.tool]()});
+    breathe();
+    cleanup=clear;
+    document.getElementById("sos-done").onclick=()=>openAfterCraving();
+    document.getElementById("sos-smoked").onclick=()=>openDay(todayKey(),true);
+  });
+}
+function openAfterCraving(){
+  const st={i:0,tags:new Set()};
+  sheet(`<h2 class="screen-title">You rode it out.</h2><span class="meta" style="margin-top:-8px">Now, while it's fresh: how strong was it?</span>
+    <div class="moods">${[1,2,3,4,5].map(v=>`<button class="mood" data-i="${v}" aria-pressed="false"><b>${v}</b><span>${["Mild","","Strong","","Intense"][v-1]||"&nbsp;"}</span></button>`).join("")}</div>
+    <div class="chips">${TAGS.map(t=>`<button class="chip" data-tag="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("")}</div>
+    <label class="f" for="a-note">Note (optional)<textarea id="a-note" placeholder="What set it off?"></textarea></label>
+    <button class="btn primary block" id="a-save">Save to diary</button><button class="link" id="a-skip" style="align-self:center">Skip</button>`,()=>{
+      root.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{st.i=+b.dataset.i;root.querySelectorAll("[data-i]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)))});
+      bindTags(st.tags);
+      document.getElementById("a-skip").onclick=closeSheet;
+      document.getElementById("a-save").onclick=async()=>{
+        const note=document.getElementById("a-note").value.trim().slice(0,2000);
+        const ok=await write(()=>S.refs.checkins.add({at:new Date().toISOString(),craving:true,intensity:st.i||null,tags:[...st.tags],note}),"Logged. That's one less.");
+        if(ok)closeSheet();
+      };
+    });
+}
+function bindTags(set){root.querySelectorAll("[data-tag]").forEach(b=>b.onclick=()=>{const t=b.dataset.tag;set.has(t)?set.delete(t):set.add(t);b.setAttribute("aria-pressed",String(set.has(t)))})}
+
+/* CHECK-IN */
+function openCheckin(){
+  const st={mood:0,tags:new Set()};
+  sheet(`<span class="kicker">${esc(fmtDay(todayKey()))} · ${esc(fmtTime(new Date().toISOString()))}</span><h2 class="screen-title" style="margin-top:-10px">How you feeling?</h2>
+    <div class="moods">${MOODS.map(m=>`<button class="mood" data-mood="${m.v}" aria-pressed="false"><b>${m.v}</b><span>${m.l}</span></button>`).join("")}</div>
+    <div class="chips">${TAGS.map(t=>`<button class="chip" data-tag="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("")}</div>
+    <label class="f" for="c-note">Note<textarea id="c-note" placeholder="Anything on your mind"></textarea></label>
+    <div class="toggle"><span><span class="title">Craving right now?</span><br><span class="meta">Open SOS instead. It's built for this.</span></span><button class="btn" style="background:var(--sos);color:#fff" id="c-sos">SOS</button></div>
+    <button class="btn primary block" id="c-save">Save check-in</button>`,()=>{
+      root.querySelectorAll("[data-mood]").forEach(b=>b.onclick=()=>{st.mood=+b.dataset.mood;root.querySelectorAll("[data-mood]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)))});
+      bindTags(st.tags);
+      document.getElementById("c-sos").onclick=openSOS;
+      document.getElementById("c-save").onclick=async()=>{
+        if(!st.mood)return toast("Pick a number from 1 to 5.");
+        const note=document.getElementById("c-note").value.trim().slice(0,2000);
+        const ok=await write(()=>S.refs.checkins.add({at:new Date().toISOString(),mood:st.mood,tags:[...st.tags],note}),"Check-in saved");
+        if(ok)closeSheet();
+      };
+    });
+}
+
+/* MISSION */
+function openMission(){
+  const {i,n,m}=missionToday(),t=todayKey(),done=S.missions[t];
+  const gift=m.gift||"a body fact",fact=FACTS[i%FACTS.length];
+  const doneBlock=()=>`<div class="banner t-brand bn-ic" style="--knock:var(--brand-soft)">${I("check-circle-f")}<div><div class="title">Done. That's the work today.</div><div>Come back tomorrow. Same time.</div></div></div>
+    <div class="banner t-gold"><div class="label bn-ic" style="color:var(--gold-deep);align-items:center">${I("gift","s20")}Your gift · ${esc(gift)}</div><div style="margin-top:6px;font-size:15px;line-height:22px;color:var(--ink)">${esc(m.reasons&&done&&done.text?done.text:fact)}</div></div>`;
+  sheet(`<span class="kicker">${esc(parseKey(t).toLocaleDateString(undefined,{weekday:"long"}))}</span><h2 class="screen-title" style="margin-top:-10px">One thing.</h2>
+    <div class="mission"><div class="band num">Mission ${n} of ${MISSIONS.length}</div><div class="body">
+      <div class="bn-ic" style="color:var(--brand-deep)">${I(m.kind==="text"?"diary":"check-circle")}<div style="color:var(--ink)"><h3>${esc(m.title)}</h3><span class="meta">${esc(m.sub)}</span></div></div>
+      <ul class="bul">${m.bul.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>
+      <div id="ms-act">${done?"":`<button class="btn primary block" id="ms-start">Start · ${m.mins} min</button>`}</div></div></div>
+    <div id="ms-after">${done?doneBlock():`<div class="banner t-gold bn-ic">${I("gift")}<span style="align-self:center">Gift on complete · ${esc(gift)}</span></div>`}</div>`,()=>{
+      const st=document.getElementById("ms-start");if(!st)return;
+      st.onclick=()=>{
+        const act=document.getElementById("ms-act");
+        if(m.kind==="text"){
+          act.innerHTML=`<label class="f" for="ms-text">Your words<textarea id="ms-text" placeholder="${esc(m.ph||"")}"></textarea></label><button class="btn primary block" id="ms-finish" style="margin-top:10px">Done</button>`;
+          document.getElementById("ms-text").focus();
+        } else act.innerHTML=`<button class="btn primary block" id="ms-finish">I did it</button>`;
+        document.getElementById("ms-finish").onclick=async()=>{
+          const txt=m.kind==="text"?document.getElementById("ms-text").value.trim().slice(0,1000):"";
+          if(m.kind==="text"&&!txt)return toast("Write a line first. No polish needed.");
+          const entry={n,at:new Date().toISOString()};if(txt)entry.text=txt;
+          const next=Object.assign({},S.missions);next[t]=entry;
+          const ok=await write(async()=>{
+            await S.refs.meta.doc("missions").set({done:next});
+            if(m.reasons&&txt){const items=S.reasons.concat([{id:"r"+Date.now(),text:txt,at:entry.at}]);await S.refs.meta.doc("reasons").set({items})}
+          });
+          if(!ok)return;
+          act.innerHTML="";const gm=m.reasons?txt:fact;
+          document.getElementById("ms-after").innerHTML=`<div class="banner t-brand bn-ic" style="--knock:var(--brand-soft)">${I("check-circle-f")}<div><div class="title">Done. That's the work today.</div><div>Come back tomorrow. Same time.</div></div></div><div class="banner t-gold"><div class="label bn-ic" style="color:var(--gold-deep);align-items:center">${I("gift","s20")}Your gift · ${esc(gift)}</div><div style="margin-top:6px;font-size:15px;line-height:22px;color:var(--ink)">${esc(gm)}</div></div>`;
+        };
+      };
+    });
+}
+function openAddReason(){
+  sheet(`<h2 class="screen-title">Add a reason.</h2><label class="f" for="r-text">One line<textarea id="r-text" placeholder="I'm quitting because…"></textarea></label><button class="btn primary block" id="r-save">Save</button>`,()=>{
+    document.getElementById("r-save").onclick=async()=>{
+      const txt=document.getElementById("r-text").value.trim().slice(0,1000);if(!txt)return;
+      const items=S.reasons.concat([{id:"r"+Date.now(),text:txt,at:new Date().toISOString()}]);
+      if(await write(()=>S.refs.meta.doc("reasons").set({items}),"Reason saved"))closeSheet();
+    };
+  });
+}
+
+/* DAY LOG + SLIP */
+function openDay(k,smokedNow){
+  const d=S.days[k];let n=d&&d.count>0?d.count:(smokedNow?1:0);
+  const list=checkinsOn(k);
+  sheet(`<span class="kicker">${esc(fmtDay(k))}</span><h2 class="screen-title" style="margin-top:-10px">Cigarettes smoked</h2>
+    <div class="stepper"><button id="d-minus" aria-label="One fewer">−</button><output id="d-n">${n}</output><button id="d-plus" aria-label="One more">+</button></div>
+    <button class="btn primary block" id="d-save">Save</button>
+    ${list.length?`<span class="label">Diary that day</span><div class="entries">${list.map(entryHTML).join("")}</div>`:""}`,()=>{
+      const out=document.getElementById("d-n");
+      document.getElementById("d-minus").onclick=()=>{n=Math.max(0,n-1);out.textContent=n};
+      document.getElementById("d-plus").onclick=()=>{n=Math.min(99,n+1);out.textContent=n};
+      document.getElementById("d-save").onclick=async()=>{closeSheet();await saveDay(k,n)};
+    });
+}
+async function saveDay(k,n){
+  const prev=S.days[k]?S.days[k].count:0,body={count:n};
+  if(n>0)body.lastAt=k===todayKey()?new Date().toISOString():new Date(parseKey(addDays(k,1)).getTime()-60000).toISOString();
+  const ok=await write(()=>S.refs.days.doc(k).set(body),n===0?"Smoke-free day logged":null);
+  if(!ok)return;
+  S.days=Object.assign({},S.days,{[k]:body}); // reflect the write now; the live snapshot confirms it
+  if(n>0&&prev===0&&k>=S.profile.quitDate)openSlip(k,n,streaks().longest);else if(n>0)toast("Updated");else render();
+}
+function openSlip(k,n,best){
+  const p=S.profile;
+  sheet(`<span class="kicker">${n} logged · ${esc(fmtDay(k))}</span><h2 class="screen-title" style="margin-top:-10px">A slip, not a restart.</h2>
+    <p class="meta" style="margin:0;font-size:15px;line-height:22px">Your best streak stays at ${best} ${best===1?"day":"days"}. Every smoke-free day before this still counts. People who treat a slip as a one-off are more likely to stay quit.</p>
+    <button class="btn primary block" id="sl-keep">Keep my quit date (${esc(fmtDay(p.quitDate))})</button>
+    <div class="card" style="gap:10px"><label class="f" for="sl-date">Or set a new quit date<input type="date" id="sl-date" value="${addDays(todayKey(),1)}"></label><button class="btn block" id="sl-new">Set new date</button></div>
+    <button class="link" id="sl-note" style="align-self:center">Write what set it off</button>`,()=>{
+      document.getElementById("sl-keep").onclick=async()=>{if(await write(()=>S.refs.base.update({bestStreak:Math.max(best,p.bestStreak||0)}),"Quit date kept. The clock restarts from your last cigarette."))closeSheet()};
+      document.getElementById("sl-note").onclick=openCheckin;
+      document.getElementById("sl-new").onclick=async()=>{
+        const q=document.getElementById("sl-date").value;if(!q)return;
+        if(await write(()=>S.refs.base.update({quitDate:q,bestStreak:Math.max(best,p.bestStreak||0)}),`New quit date: ${fmtDay(q)}`))closeSheet();
+      };
+    });
+}
+
+/* SETTINGS */
+function openSettings(){
+  const p=S.profile;
+  sheet(`<h2 class="screen-title">Settings</h2>
+    <label class="f" for="st-quit">Quit date<input type="date" id="st-quit" value="${p.quitDate}"></label>
+    <label class="f" for="st-per">Cigarettes a day before quitting<input type="number" id="st-per" min="1" max="100" value="${p.perDay}"></label>
+    <label class="f" for="st-price">Price per cigarette (₹)<input type="number" id="st-price" min="0" step="0.5" value="${p.price}"></label>
+    <label class="f" for="st-bn">SOS buddy's name<input type="text" id="st-bn" value="${esc(p.buddyName||"")}" maxlength="60"></label>
+    <label class="f" for="st-bp">SOS buddy's phone<input type="tel" id="st-bp" value="${esc(p.buddyPhone||"")}" maxlength="24"></label>
+    <span class="meta">Changing the quit date keeps your best streak.</span>
+    <button class="btn primary block" id="st-save">Save</button>
+    <div class="card" style="gap:10px"><span class="label">Your data</span>
+      <span class="meta">Everything is stored on this phone only. Save a backup now and then, and before you delete the app or switch phones.</span>
+      <button class="btn block" id="st-export">Save a backup</button>
+      <label class="btn block" for="st-import" style="text-align:center;cursor:pointer">Restore from a backup</label>
+      <input type="file" id="st-import" accept="application/json,.json" hidden>
+      <div id="st-restore"></div></div>`,()=>{
+      document.getElementById("st-export").onclick=exportBackup;
+      document.getElementById("st-import").onchange=e=>readBackup(e.target.files[0]);
+      document.getElementById("st-save").onclick=async()=>{
+        const q=document.getElementById("st-quit").value,per=+document.getElementById("st-per").value,pr=+document.getElementById("st-price").value;
+        if(!q||!(per>0))return toast("Add a quit date and a daily count.");
+        const best=Math.max(streaks().longest,p.bestStreak||0);
+        if(await write(()=>S.refs.base.update({quitDate:q,perDay:per,price:pr||0,bestStreak:best,buddyName:document.getElementById("st-bn").value.trim(),buddyPhone:document.getElementById("st-bp").value.trim()}),"Saved"))closeSheet();
+      };
+    });
+}
+
+
+/* ---------- backup ---------- */
+async function exportBackup(){
+  const data={app:"clear-air",version:1,exportedAt:new Date().toISOString(),store:LocalDB.dump()};
+  const name=`clear-air-backup-${todayKey()}.json`;
+  const blob=new Blob([JSON.stringify(data,null,1)],{type:"application/json"});
+  try{const file=new File([blob],name,{type:"application/json"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Clear Air backup"});toast("Backup ready");return}}catch(e){if(e&&e.name==="AbortError")return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast("Backup saved");
+}
+function readBackup(file){
+  if(!file)return;const box=document.getElementById("st-restore");
+  const r=new FileReader();
+  r.onload=()=>{let d;try{d=JSON.parse(r.result)}catch(e){d=null}
+    if(!d||d.app!=="clear-air"||!d.store||!d.store["data/users/local/profile"]){box.innerHTML=`<span class="meta">That file isn't a Clear Air backup.</span>`;return}
+    const n=Object.keys(d.store).filter(k=>k.includes("/days/")).length,c=Object.keys(d.store).filter(k=>k.includes("/checkins/")).length;
+    box.innerHTML=`<div class="banner t-gold"><div class="title" style="color:var(--ink)">Replace everything on this phone?</div><div>Backup from ${esc(new Date(d.exportedAt).toLocaleDateString())}: ${n} logged days, ${c} diary entries.</div><div class="row" style="margin-top:10px"><button class="btn primary" id="st-restore-go">Restore</button><button class="btn" style="background:var(--surface)" id="st-restore-no">Cancel</button></div></div>`;
+    document.getElementById("st-restore-no").onclick=()=>{box.innerHTML=""};
+    document.getElementById("st-restore-go").onclick=()=>{LocalDB.replaceAll(d.store);closeSheet();toast("Backup restored")};
+  };
+  r.readAsText(file);
+}
+
+/* toast */
+let tt=null;
+function toast(msg){const r=document.getElementById("toast-root");r.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;clearTimeout(tt);tt=setTimeout(()=>r.innerHTML="",2600)}
+
+
+/* ---------- install + offline ---------- */
+let deferredPrompt=null;
+const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+function installHint(){
+  let dismissed=false;try{dismissed=localStorage.getItem("clearair.hideInstall")==="1"}catch(e){}
+  if(standalone()||dismissed||(!isIOS&&!deferredPrompt))return "";
+  return `<section class="banner t-brand" id="install-card"><div class="bn-ic">${I("leaf")}<div><div class="title" style="color:var(--ink)">Put Clear Air on your home screen</div><div>${isIOS?"In Safari, tap the Share button, then “Add to Home Screen”.":"It opens full screen and works offline."}</div></div></div><div class="row" style="margin-top:12px;padding-left:34px">${isIOS?"":`<button class="btn primary" id="install-go">Install</button>`}<button class="btn" style="background:var(--surface)" id="install-no">Not now</button></div></section>`;
+}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;if(S.tab==="home"&&S.mode==="live")render()});
+document.addEventListener("click",async e=>{
+  if(e.target.closest("#install-no")){try{localStorage.setItem("clearair.hideInstall","1")}catch(_){}render()}
+  if(e.target.closest("#install-go")&&deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;render()}
+});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&!root.innerHTML&&S.mode!=="loading")render()});
+if("serviceWorker" in navigator&&location.protocol!=="file:"){addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+initStore();
+})();
+</script>
+</body>
+</html>
